@@ -1,6 +1,6 @@
-<center>
+<div align="center">
 <img src="https://secureservercdn.net/198.71.190.232/z9g.9e3.myftpupload.com/wp-content/uploads/2019/02/amzetta-logo-header.png?time=1558337221" alt="react boilerplate banner" align="center" />
-</center>
+</div>
 
 <br />
 
