@@ -1,9 +1,9 @@
-<img src="https://secureservercdn.net/198.71.190.232/z9g.9e3.myftpupload.com/wp-content/uploads/2019/02/snap-vdi-tc.png" alt="react boilerplate banner" align="center" />
+<img src="https://secureservercdn.net/198.71.190.232/z9g.9e3.myftpupload.com/wp-content/uploads/2019/02/amzetta-logo-header.png?time=1558337221" alt="react boilerplate banner" align="center" />
 
 <br />
 
-<div align="center"><strong>SnapVDI client Manager</strong></div>
-<div align="center">SCM enterprise client management interface</div>
+<div align="center"><strong>FMS</strong></div>
+<div align="center">Apollo Feedback Management System</div>
 
 <br />
 
