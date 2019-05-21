@@ -1,0 +1,16 @@
+
+.demo-page-contain {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+    flex-direction: column;
+    /*top:35vh;*/
+    position: relative;
+    /* height: 50% */
+    
+}
+
+.star-component {
+    font-size: 50px;
+}
