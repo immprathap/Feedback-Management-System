@@ -40,14 +40,7 @@ import Timeline from "@material-ui/icons/Timeline";
 import WidgetsIcon from "@material-ui/icons/Widgets";*/
 
 var dashRoutes = [
-  {
-    path: "/dashboard",
-    name: "Apollo Patient Feedback System",
-    rtlName: "لوحة القيادة",
-    icon: DashboardIcon,
-    component: Dashboard,
-    layout: "/user"
-  },
+  
   {
     path: "/feedback_category",
     name: "Apollo Patient Feedback System",
