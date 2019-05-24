@@ -12,7 +12,7 @@ import withStyles from "material-ui/styles/withStyles";
 import Dashboard from "./Dashboard";
 
 
-import adminHomeStyle from "assets/jss/material-dashboard-pro-react/views/adminHomeStyle.jsx";
+import adminHomeStyle from "assets/jss/material-dashboard-pro-react/containers/adminHomeStyle.jsx";
 
 
 

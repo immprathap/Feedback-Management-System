@@ -34,7 +34,7 @@ import Check from "@material-ui/icons/Check";
 import FiberManualRecord from "@material-ui/icons/FiberManualRecord";
 import InfoIcon from "@material-ui/icons/Info";
 
-import feedbackCategoryStyle from "assets/jss/material-dashboard-pro-react/views/feedbackCategoryStyle.jsx";
+import feedbackCategoryStyle from "assets/jss/material-dashboard-pro-react/containers/feedbackCategoryStyle.jsx";
 
 class PatientInfo extends React.Component {
     state = {

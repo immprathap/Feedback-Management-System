@@ -1,0 +1,15 @@
+{
+    "app.containers.User.FeedbackCategory.1": "உள்நோயாளி",
+    "app.containers.User.FeedbackCategory.2": "வெளிநோயாளி",
+    "app.containers.User.FeedbackCategory.3": "விற்பனைப் பிரிவு",
+    "app.containers.User.FeedbackCategory.4": "இணையதளம்",
+    "app.containers.User.FeedbackCategory.5": "வெளியேறிய பின்",
+    "app.containers.User.FeedbackCategory.6": "முன் வரிசை",
+    "app.containers.User.FeedbackCategory.7": "எழுதப்பட்ட/மின்னஞ்சல் வாடிக்கையாளர்களிடமிருந்து",
+    "app.containers.User.FeedbackCategory.8": "மருத்துவமனையின் சேவைகளைப் பயன்படுத்தி ஊழியர்",
+    "app.containers.User.FeedbackCategory.9": "தனிப்பயனாக்கப்பட்ட உடல்நல சோதனை",
+    "app.containers.User.FeedbackCategory.10": "வெளியேறிய பின்(மையப்படுத்தப்பட்ட)",
+    "app.containers.User.FeedbackCategory.11": "அப்போலோ உடனடி கருத்து அமைப்பு",
+    "app.containers.LocaleToggle.en": "English",
+    "app.containers.LocaleToggle.ta": "தமிழ்"
+}

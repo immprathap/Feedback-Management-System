@@ -9,40 +9,49 @@ import { defineMessages } from 'react-intl';
 export const scope = 'app.containers.User.FeedbackCategory';
 
 export default defineMessages({
-  InPatient: {
-    id: `${scope}.InPatient`,
+  1: {
+    id: `${scope}.1`,
     defaultMessage: 'In-Patient',
   },
-  OutPatient: {
-    id: `${scope}.OutPatient`,
+  2: {
+    id: `${scope}.2`,
     defaultMessage: 'Out-Patient',
   },
-  SalesForce: {
-    id: `${scope}.SalesForce`,
+  3: {
+    id: `${scope}.3`,
     defaultMessage: 'Sales Force',
   },
-  Website: {
-    id: `${scope}.Website`,
-    defaultMessage: 'Sales Force',
+  4: {
+    id: `${scope}.4`,
+    defaultMessage: 'Website',
   },
-  Frontline: {
-    id: `${scope}.Frontline`,
-    defaultMessage: 'Frontline',
-  },
-  PersonalizedHealthCheck: {
-    id: `${scope}.PersonalizedHealthCheck`,
-    defaultMessage: 'Personalized Health Check',
-  },
-  EmployeeUsingHospitalServices: {
-    id: `${scope}.EmployeeUsingHospitalServices`,
-    defaultMessage: 'Employee using Hospital Services',
-  },
-  PostDischarge: {
-    id: `${scope}.PostDischarge`,
+  5: {
+    id: `${scope}.5`,
     defaultMessage: 'Post Discharge',
   },
-  CentralizedPostDischarge: {
-    id: `${scope}.CentralizedPostDischarge`,
+  6: {
+    id: `${scope}.6`,
+    defaultMessage: 'Frontline',
+  },
+  7: {
+    id: `${scope}.7`,
+    defaultMessage: 'Written/Email from Customers',
+  },
+  8: {
+    id: `${scope}.8`,
+    defaultMessage: 'Employee using Hospital Services',
+  },
+  9: {
+    id: `${scope}.9`,
+    defaultMessage: 'Personalized Health Check',
+  },
+  10: {
+    id: `${scope}.10`,
     defaultMessage: 'Centralized Post Discharge',
-  }
+  },
+  11: {
+    id: `${scope}.11`,
+    defaultMessage: 'Apollo Instant Feedback System',
+  },
+  
 });

@@ -18,7 +18,7 @@ import rate4g from "assets/img/smileys/r4g.png";
 import rate5 from "assets/img/smileys/r5.png";
 import rate5g from "assets/img/smileys/r5g.png";
 
-import GetFeedbackStyle from "assets/jss/material-dashboard-pro-react/views/getFeedbackStyle.jsx"
+import GetFeedbackStyle from "assets/jss/material-dashboard-pro-react/containers/getFeedbackStyle.jsx"
 
 class GetFeedback extends React.Component {
 

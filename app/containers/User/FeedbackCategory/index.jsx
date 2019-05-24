@@ -1,6 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import { toJS } from 'immutable';
+import LocaleToggle from 'containers/LocaleToggle';
+
 // material-ui components
 import withStyles from "material-ui/styles/withStyles";
 import Paper from '@material-ui/core/Paper';
@@ -16,11 +19,11 @@ import GridItem from "components/Grid/GridItem.jsx";
 import PanelCard from "components/Card/PanelCard.jsx";
 
 // icons
-import { Search as SearchIcon, Security as SecurityIcon, Cloud as ColudIcon, LibraryBooks as LibraryIcon } from "@material-ui/icons";
-import { /*FaBed as InpatientIcon, */FaSalesforce as SalesForceIcon, FaUsers as UsersIcon, FaUsersCog as UserSettingsIcon, FaGlobe as WebIcon } from 'react-icons/fa';
-import {IoIosWalk as OutpatientIcon, IoMdBed as InpatientIcon} from "react-icons/io"
-
-import feedbackCategoryStyle from "assets/jss/material-dashboard-pro-react/views/feedbackCategoryStyle.jsx";
+import { PhoneInTalk as PDIcon } from "@material-ui/icons";
+import { /*FaBed as InpatientIcon, */FaSalesforce as SalesForceIcon, FaUsers as UsersIcon, FaUsersCog as UserSettingsIcon, FaGlobe as WebIcon, FaIdCardAlt as EHSIcon } from 'react-icons/fa';
+import { IoIosWalk as OutpatientIcon, IoMdBed as InpatientIcon, IoIosMail as WRIcon } from "react-icons/io"
+import {GoChecklist as PHCIcon} from "react-icons/go";
+import feedbackCategoryStyle from "assets/jss/material-dashboard-pro-react/containers/feedbackCategoryStyle.jsx";
 
 class FeedbackCategory extends React.Component {
     state = {
@@ -38,145 +41,81 @@ class FeedbackCategory extends React.Component {
         });
     };
 
+    getCategoryIcon = (category) => {
+        const { classes } = this.props;
+        switch (category) {
+            case 1: return <InpatientIcon className={classes.faIconBig} classes={{ root: classes.panelCardIcon }} />
+            case 2: return <OutpatientIcon className={classes.faIconBig} classes={{ root: classes.panelCardIcon }} />
+            case 3: return <SalesForceIcon className={classes.faIconBig} classes={{ root: classes.panelCardIcon }} />
+            case 4: return <WebIcon className={classes.faIconBig} classes={{ root: classes.panelCardIcon }} />
+            case 5: return <PDIcon  classes={{ root: classes.panelCardIcon }} />
+            case 6: return <UsersIcon className={classes.panelCardFaIcon} classes={{ root: classes.panelCardIcon }} />
+            case 7: return <WRIcon className={classes.faIconBig} className={classes.panelCardFaIcon} />
+            case 8: return <EHSIcon className={classes.panelCardFaIcon} />
+            case 9: return <PHCIcon className={classes.panelCardFaIcon} />
+        }
+    };
+
+    getRandomNumber = (min, max) => {
+        return Math.floor(Math.random() * max+1);
+    }
+
+    getCardColor = (category) => {
+        switch (category) {
+            case 1: return "primary";
+            case 2: return "rose";
+            case 3: return "success";
+            case 4: return "info";
+            case 5: return "danger";
+            case 6: return "rose";
+            case 7: return "warning";
+            case 8: return "primary";
+            case 9: return "success";
+            default: return "info"
+        };
+    }
+
     render() {
         const { classes } = this.props;
+        const categories = this.props.categories.toJS();
+
+        let feedback_category_list_component = [];
+        /*for (let i = 0; i < Math.ceil(categories.length / CATEGORIES_PER_ROW); i++) {
+            feedback_category_list_component = feedback_category_list_component.concat(
+                <GridContainer justify="space-around">*/
+        feedback_category_list_component = categories.map((category, i) => {
+            return (
+                <GridItem key={i} xs={12} sm={4} md={3} lg={2}>
+                    <PanelCard
+                        content={
+                            this.getCategoryIcon(category)
+                        }
+                        hover
+                        panelColor={this.getCardColor(category)}
+                        title={<FormattedMessage {...messages[category]} />}
+                        text={
+                            <span className={classes.panelCardDescription}>
+
+                            </span>
+                        }
+                        onClick={this.props.onSelect.bind(this, /*messages.InPatient*/"ip")}
+                    />
+                </GridItem>
+            );
+        })/*}
+                </GridContainer>
+            )
+        }*/
 
         return (
             <GridContainer justify="space-around">
                 <GridItem xs={12} sm={10} md={10}>
                     <Paper className={classes.categoryPaper} elevation={1}>
                         <GridContainer justify="space-around">
-                            <GridItem xs={12} sm={4} md={2}>
-                                <PanelCard
-                                    content={
-                                        <InpatientIcon className={classes.faIconBig} classes={{ root: classes.panelCardIcon }} />
-                                    }
-                                    hover
-                                    panelColor="info"
-                                    title={<FormattedMessage {...messages.InPatient} />}
-                                    text={
-                                        <span className={classes.panelCardDescription}>
-
-                                        </span>
-                                    }
-                                    onClick={this.props.onSelect.bind(this, /*messages.InPatient*/"ip")}
-                                />
-                            </GridItem>
-                            <GridItem xs={12} sm={4} md={2}>
-                                <PanelCard
-                                    content={
-                                        <OutpatientIcon className={classes.faIconBig} classes={{ root: classes.panelCardIcon }} />
-                                    }
-                                    hover
-                                    panelColor="danger"
-                                    title={<FormattedMessage {...messages.OutPatient} />}
-                                    text={
-                                        <span>
-
-                                        </span>
-                                    }
-                                    onClick={this.props.onSelect.bind(this, /*messages.OutPatient*/"op")}
-                                />
-                            </GridItem>
-                            <GridItem xs={12} sm={4} md={2}>
-                                <PanelCard
-                                    content={
-                                        <SalesForceIcon className={classes.faIconBig} classes={{ root: classes.panelCardIcon }} />
-                                    }
-                                    hover
-                                    panelColor="success"
-                                    title={<FormattedMessage {...messages.SalesForce} />}
-                                    text={
-                                        <span>
-
-                                        </span>
-                                    }
-                                    onClick={this.props.onSelect.bind(this, /*messages.SalesForce.id*/"sf")}
-                                />
-                            </GridItem>
-                            <GridItem xs={12} sm={4} md={2}>
-                                <PanelCard
-                                    content={
-                                        <WebIcon classes={{ root: classes.panelCardIcon }} />
-                                    }
-                                    hover
-                                    panelColor="warning"
-                                    title={<FormattedMessage {...messages.Website} />}
-                                    text={
-                                        <span>
-
-                                        </span>
-                                    }
-                                    onClick={this.props.onSelect.bind(this, "wf")}
-                                />
-                            </GridItem>
+                        <GridContainer justify="flex-end" style={{marginBottom: "25px"}}>
+                        <GridItem xs={2}><LocaleToggle style={{position: "absolute", top: "10px"}}/></GridItem>
                         </GridContainer>
-                        <GridContainer justify="space-around">
-                            <GridItem xs={12} sm={4} md={2}>
-                                <PanelCard
-                                    content={
-                                        <UsersIcon className={classes.panelCardFaIcon} />
-                                    }
-                                    hover
-                                    panelColor="rose"
-                                    title={<FormattedMessage {...messages.Frontline} />}
-                                    text={
-                                        <span>
-
-                                        </span>
-                                    }
-                                    onClick={this.props.onSelect.bind(this, /*messages.Frontline.id*/"fl")}
-                                />
-                            </GridItem>
-                            <GridItem xs={12} sm={4} md={2}>
-                                <PanelCard
-                                    content={
-                                        <UserSettingsIcon className={classes.panelCardFaIcon} />
-                                    }
-                                    hover
-                                    panelColor="primary"
-                                    title={<FormattedMessage {...messages.PersonalizedHealthCheck} />}
-                                    text={
-                                        <span>
-
-                                        </span>
-                                    }
-                                    onClick={this.props.onSelect.bind(this, /* messages.PersonalizedHealthCheck.id */"phc")}
-                                />
-                            </GridItem>
-                            <GridItem xs={12} sm={4} md={2}>
-                                <PanelCard
-                                    content={
-                                        <UserSettingsIcon className={classes.panelCardFaIcon} />
-                                    }
-                                    hover
-                                    panelColor="warning"
-                                    title={<FormattedMessage {...messages.EmployeeUsingHospitalServices} />}
-                                    text={
-                                        <span>
-
-                                        </span>
-                                    }
-                                    onClick={this.props.onSelect.bind(this, /* messages.EmployeeUsingHospitalServices.id */"euhs")}
-                                />
-                            </GridItem>
-
-                            <GridItem xs={12} sm={4} md={2}>
-                                <PanelCard
-                                    content={
-                                        <UserSettingsIcon className={classes.panelCardFaIcon} />
-                                    }
-                                    hover
-                                    panelColor="rose"
-                                    title={<span><FormattedMessage {...messages.PostDischarge} /> / <FormattedMessage {...messages.CentralizedPostDischarge} /></span>}
-                                    text={
-                                        <span>
-
-                                        </span>
-                                    }
-                                    onClick={this.props.onSelect.bind(this, /* messages.PostDischarge.id */"pd")}
-                                />
-                            </GridItem>
+                            {feedback_category_list_component}
                         </GridContainer>
                     </Paper>
                 </GridItem>
@@ -187,6 +126,7 @@ class FeedbackCategory extends React.Component {
 
 FeedbackCategory.propTypes = {
     classes: PropTypes.object.isRequired,
+    categories: PropTypes.object.isRequired,
     onSelect: PropTypes.func.isRequired,
 };
 

@@ -1,1 +1,5 @@
-[]
+{
+    "app.containers.User.FeedbackCategory.1": "In-Patient",
+    "app.containers.LocaleToggle.en": "English",
+    "app.containers.LocaleToggle.ta": "தமிழ்"
+}

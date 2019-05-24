@@ -1,4 +1,4 @@
-import Dashboard from "containers/Admin/Dashboard.jsx";
+import Dashboard from "containers/Admin/Dashboard/index.jsx";
 import FeedbackCategory from "containers/User";
 /*import Buttons from "views/Components/Buttons.jsx";
 import Calendar from "views/Calendar/Calendar.jsx";
