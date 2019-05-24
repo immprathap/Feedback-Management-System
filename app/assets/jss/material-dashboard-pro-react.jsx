@@ -26,7 +26,6 @@ const hexToRgb = input => {
   input = input.replace("#", "");
   let hexRegex = /[0-9A-Fa-f]/g;
   if (!hexRegex.test(input) || (input.length !== 3 && input.length !== 6)) {
-    console.log(input);
     throw new Error("input is not a valid hex color.");
   }
   if (input.length === 3) {
@@ -378,33 +377,6 @@ const cardLink = {
   }
 };
 
-
-const main = {
-  background: whiteColor,
-  position: "relative",
-  zIndex: "3"
-};
-
-const mainRaised = {
-  "@media (max-width: 576px)": {
-    marginTop: "-600px"
-  },
-  "@media (max-width: 830px)": {
-    marginLeft: "10px",
-    marginRight: "10px"
-  },
-  margin: "-600px 30px 0px",
-  borderRadius: "6px",
-  boxShadow:
-    "0 16px 24px 2px rgba(" +
-    hexToRgb(blackColor) +
-    ", 0.14), 0 6px 30px 5px rgba(" +
-    hexToRgb(blackColor) +
-    ", 0.12), 0 8px 10px -5px rgba(" +
-    hexToRgb(blackColor) +
-    ", 0.2)"
-};
-
 export {
   hexToRgb,
   //variables
@@ -454,7 +426,5 @@ export {
   title,
   cardTitle,
   cardSubtitle,
-  cardLink,
-  main,
-  mainRaised
+  cardLink
 };
