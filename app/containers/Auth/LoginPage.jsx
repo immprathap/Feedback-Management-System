@@ -15,6 +15,10 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import Icon from "@material-ui/core/Icon";
 import Slide from '@material-ui/core/Slide';
 import Tooltip from '@material-ui/core/Tooltip';
+import Select from '@material-ui/core/Select';//
+import MenuItem from '@material-ui/core/MenuItem';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
 
 
 // @material-ui/icons
@@ -51,7 +55,8 @@ class LoginPage extends React.Component {
       slideDirection: "right",
       mode: "0",
       uname: "",
-      pword: ""
+      pword: "",
+      location:'',
     };
   }
 
@@ -122,10 +127,24 @@ class LoginPage extends React.Component {
       [field]: event.target.value
     })
   }
+  onClickRegion = (selectedLocation) => {
+    console.log("hi",selectedLocation.target.value );
+    this.setState({
+      location: selectedLocation.target.value
+    });
+  }
 
   render() {
     const { classes } = this.props;
     const { activeStep, slideDirection, mode, uname, pword } = this.state;
+
+    // var selectOptions = [
+    //   { value: "Delhi", label: "Delhi" },
+    //   { value: "Chennai", label: "Chennai" },
+    //   { value: "Mumbai", label: "Mumbai" },
+    // ];
+    const dropdownList=["Chennai", "Mumbai", "Delhi"];
+    
 
     let stepContent;
     switch (activeStep) {
@@ -159,6 +178,28 @@ class LoginPage extends React.Component {
                 )
               }}
             />
+            <FormControl fullWidth>
+            <InputLabel htmlFor="region-l">Select The Region</InputLabel>
+            <Select
+              //  style={{ width: "300px" }}
+              fullWidth
+              value={this.state.location?this.state.location:''}
+              inputProps={{
+                name: 'region',
+                id: 'region-l',
+              }}
+              // onChange={value =>
+              //   console.log("hi",this.state.location)
+                
+              // }
+              onChange={this.onClickRegion.bind(this)}
+              >
+            <MenuItem value={"Delhi"}>Delhi</MenuItem>
+            <MenuItem value={"Chennai"}>Chennai</MenuItem>
+            <MenuItem value={"Mumbai"}>Mumbai</MenuItem>
+            </Select>
+            </FormControl>
+            <br></br>
             <FormControlLabel
               control={
                 <Checkbox
