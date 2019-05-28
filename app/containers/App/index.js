@@ -44,7 +44,7 @@ export default function App() {
             <Route path="/auth" component={AuthLayout} />
             <Route path="/admin" component={AdminLayout} />
             <Route path="/user" component={UserLayout} />
-            <Redirect from="/" to="/user/feedback_category" />
+            <Redirect from="/" to="/auth/login" />
             {/*indexRoutes.map((prop, key) => {
             return <Route exact={prop.exact ? true : false} path={prop.path} component={prop.component} key={key} />;
           })*/}

@@ -1,5 +1,6 @@
 import Dashboard from "containers/Admin/Dashboard/index.jsx";
 import FeedbackCategory from "containers/User";
+import LoginPage from "containers/Auth/LoginPage";
 /*import Buttons from "views/Components/Buttons.jsx";
 import Calendar from "views/Calendar/Calendar.jsx";
 import Charts from "views/Charts/Charts.jsx";
@@ -56,6 +57,15 @@ var dashRoutes = [
     icon: DashboardIcon,
     component: Dashboard,
     layout: "/admin"
+  },
+  {
+    path: "/login",
+    name: "Login",
+    rtlName: "هعذاتسجيل الدخول",
+    mini: "L",
+    rtlMini: "هعذا",
+    component: LoginPage,
+    layout: "/auth"
   },/*
   {
     collapse: true,
