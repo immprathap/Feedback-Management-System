@@ -11,7 +11,7 @@ import Paper from '@material-ui/core/Paper';
 // i18
 import { FormattedMessage } from 'react-intl';
 // messages
-import messages from './messages';
+import messages from '../messages_category';
 
 // core components
 import GridContainer from "components/Grid/GridContainer.jsx";
@@ -53,12 +53,10 @@ class FeedbackCategory extends React.Component {
             case 7: return <WRIcon className={classes.faIconBig} className={classes.panelCardFaIcon} />
             case 8: return <EHSIcon className={classes.panelCardFaIcon} />
             case 9: return <PHCIcon className={classes.panelCardFaIcon} />
+            case 10: return <PDIcon  classes={{ root: classes.panelCardIcon }} />
+            default: return <PHCIcon className={classes.panelCardFaIcon} />
         }
     };
-
-    getRandomNumber = (min, max) => {
-        return Math.floor(Math.random() * max+1);
-    }
 
     getCardColor = (category) => {
         switch (category) {
@@ -79,6 +77,7 @@ class FeedbackCategory extends React.Component {
         const { classes } = this.props;
         const categories = this.props.categories.toJS();
 
+
         let feedback_category_list_component = [];
         /*for (let i = 0; i < Math.ceil(categories.length / CATEGORIES_PER_ROW); i++) {
             feedback_category_list_component = feedback_category_list_component.concat(
@@ -98,7 +97,7 @@ class FeedbackCategory extends React.Component {
 
                             </span>
                         }
-                        onClick={this.props.onSelect.bind(this, /*messages.InPatient*/"ip")}
+                        onClick={this.props.onSelect.bind(this, category)}
                     />
                 </GridItem>
             );

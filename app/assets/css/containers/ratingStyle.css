@@ -1,14 +1,7 @@
-.demo-page-contain {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.page-scroll-contain {
+   
     height: 50vh;
-    flex-direction: column;
-    /*top:35vh;*/
     margin: "10px 0";
-    position: relative;
-    /* height: 50% */
-    
 }
 
 .star-component {

@@ -3,10 +3,8 @@ import PropTypes from "prop-types";
 
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
-import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import { toJS } from 'immutable';
 
 
 import injectSaga from 'utils/injectSaga';
@@ -15,7 +13,6 @@ import { feedbackTemplateInfoRequest } from './actions';
 import makeSelectUser, { makeSelectFeedbackTemplateInfo, makeSelectFeedbackTemplateCategories } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import messages from './messages';
 
 // material-ui components
 import withStyles from "material-ui/styles/withStyles";
@@ -30,11 +27,12 @@ import GridItem from "components/Grid/GridItem.jsx";
 import FeedbackCategory from "./FeedbackCategory";
 import PatientDetails from "./PatientDetails";
 import PatientFeedback from "./PatientFeedback"
+import GetComment from "./PatientFeedback/Transition/GetFeedback/GetComments"
 
 import userHomeStyle from "assets/jss/material-dashboard-pro-react/containers/userHomeStyle.jsx";
 
 const ZOOM_INTERVAL = 800;
-const ZOOM_TIME = 600;
+const ZOOM_TIME = 500;
 
 class User extends React.Component {
     state = {
@@ -59,31 +57,53 @@ class User extends React.Component {
         }, ZOOM_INTERVAL)
     }
 
-    handleFeedbackcategorySelect = (feedbackCategory) => {
+    handleCategorySelect = (feedbackCategory) => {
         this.makeZoom({
             stepIndex: 1,
             feedbackCategory
         });
     }
 
-    handlePatientDetailsSubmit = (patientDetails) => {
+    handleCancelFeedback = () => {
         this.makeZoom({
-            stepIndex: 2,
-            patientDetails
+            stepIndex: 0,
+            feedbackCategory: null
         });
     }
 
-    handlePatientFeedbackSubmit = () => {
+    handlePatientDetailsSubmit = (patientDetails) => {
+        const { feedbackCategory } = this.state;
+        const feedbackTemplateByCategory = this.props.feedbackTemplateInfo.toJS().find((data) => data.category_id === feedbackCategory);
+
+        if (feedbackTemplateByCategory && feedbackTemplateByCategory.dep_list && feedbackTemplateByCategory.dep_list.length) {
+            this.makeZoom({
+                stepIndex: 2,
+                patientDetails
+            });
+        } else {
+            this.makeZoom({
+                stepIndex: 3,
+                patientDetails: null
+            });
+        }
+    }
+
+    handleRatingsSubmit = (feedbacks) => {
+        this.makeZoom({
+            stepIndex: 3,
+            feedbacks
+        });
+    }
+
+    handleCommentsSubmit = (comments) => {
+        
 
     }
 
     render() {
         const { classes, feedbackTemplateInfo, feedbackTemplateCategories } = this.props;
         const { stepIndex, feedbackCategory } = this.state;
-
         let stepContent;
-
-        let actionButtons;
 
         switch (stepIndex) {
             case 0: {
@@ -94,7 +114,7 @@ class User extends React.Component {
                                 <title>Feedback Category</title>
                                 <meta name="feedback_category" content="Feedback Category" />
                             </Helmet>
-                            <FeedbackCategory categories={feedbackTemplateCategories} onSelect={this.handleFeedbackcategorySelect} />
+                            <FeedbackCategory categories={feedbackTemplateCategories} onSelect={this.handleCategorySelect} />
                         </div>
                     ) : (
                             <CircularProgress />
@@ -109,7 +129,7 @@ class User extends React.Component {
                             <title>Patient Details</title>
                             <meta name="patient_details" content="Patient Details" />
                         </Helmet>
-                        <PatientDetails feedbackCategory={feedbackCategory} onSubmit={this.handlePatientDetailsSubmit} />
+                        <PatientDetails feedbackCategory={feedbackCategory} onCancel={this.handleCancelFeedback} onSubmit={this.handlePatientDetailsSubmit} />
                     </div>
                 );
 
@@ -119,20 +139,44 @@ class User extends React.Component {
                 stepContent = (
                     <div>
                         <Helmet>
-                            <title>Patient Feedback</title>
-                            <meta name="patient_feedback" content="Patient Feedback" />
+                            <title>Patient Feedback Ratings</title>
+                            <meta name="patient_feedback" content="Patient Feedback Ratings" />
                         </Helmet>
-                        <PatientFeedback feedbackCategory={feedbackCategory} onSubmit={this.handlePatientFeedbackSubmit} />
+                        <PatientFeedback feedbackCategory={feedbackCategory} feedbackTemplateInfo={feedbackTemplateInfo.toJS().find((data) => data.category_id === feedbackCategory)} onCancel={this.handleCancelFeedback} onSubmit={this.handleRatingsSubmit} />
                     </div>
                 );
+                break;
+            }
+            case 3: {
+                const feedbackTemplateByCategory = feedbackTemplateInfo.toJS().find((data) => data.category_id === feedbackCategory);
+                stepContent = (
+                    <div>
+                        <Helmet>
+                            <title>Patient Feedback Comments</title>
+                            <meta name="patient_feedback" content="Patient Feedback Comments" />
+                        </Helmet>
+                        <GetComment commentTypes={feedbackTemplateByCategory.comments_type} onCancel={this.handleCancelFeedback} onSubmit={this.handleCommentsSubmit} />
+                    </div>
+                );
+                break;
+            }
+            case 4: {
+                stepContent = (
+                    <div>
+                        <Helmet>
+                            <title>Feedback Completed</title>
+                            <meta name="patient_feedback_completed" content="Feedback Completed" />
+                        </Helmet>
+                        <GetComment commentTypes={feedbackTemplateByCategory.comments_type} onCancel={this.handleCancelFeedback} onSubmit={this.handleCommentsSubmit} />
+                    </div>
+                );
+                break;
             }
         }
 
         return (
             <Zoom timeout={ZOOM_TIME} in={this.state.fadeIn}>
-                <div>
-                    {stepContent}
-                </div>
+                {stepContent}
             </Zoom>
         );
     }

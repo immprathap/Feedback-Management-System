@@ -26,7 +26,8 @@ class CommentBox extends React.Component {
   state = {
     value: ''
   };
-  handleChange(event) {
+  
+  handleChange=(event)=> {
     this.setState({
       value: event.target.value
   });
@@ -42,6 +43,7 @@ class CommentBox extends React.Component {
         id="outlined-multiline-static"
         label="Add Comments"
         multiline
+        fullWidth
         rows="4"
         defaultValue=""
         className={classes.textField}
@@ -50,7 +52,7 @@ class CommentBox extends React.Component {
       />
       <br></br>
         <FormControl component="fieldset" className={classes.formControl}>
-        <FormLabel component="legend">Options</FormLabel>
+        {/*<FormLabel component="legend">Options</FormLabel>*/}
         <RadioGroup
           aria-label="gender"
           name="gender2"

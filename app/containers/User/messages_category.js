@@ -6,7 +6,7 @@
 
 import { defineMessages } from 'react-intl';
 
-export const scope = 'app.containers.User.FeedbackCategory';
+export const scope = 'app.containers.User.Feedback.UserCategory';
 
 export default defineMessages({
   1: {
@@ -48,10 +48,6 @@ export default defineMessages({
   10: {
     id: `${scope}.10`,
     defaultMessage: 'Centralized Post Discharge',
-  },
-  11: {
-    id: `${scope}.11`,
-    defaultMessage: 'Apollo Instant Feedback System',
   },
   
 });

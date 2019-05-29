@@ -26,7 +26,7 @@ const makeSelectFeedbackTemplateInfo = () =>
     },
   );
 
-  const makeSelectFeedbackTemplateCategories = () =>
+  const makeSelectFeedbackTemplateCategories = () => 
   createSelector(
     selectUserDomain,
     substate => {

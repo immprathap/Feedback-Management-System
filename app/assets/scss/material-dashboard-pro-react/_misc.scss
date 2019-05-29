@@ -251,7 +251,7 @@ img {
 #cd-vertical-nav {
   position: fixed;
   //right: -78px;
-  right: 0;
+  right: 10px;
   top: 50%;
   bottom: auto;
   -webkit-transform: translateY(-50%);
@@ -274,6 +274,7 @@ img {
   backface-visibility: hidden;
   width: 10px;
 }
+#cd-vertical-nav a.is-selected span,
 #cd-vertical-nav a:hover span,
 #cd-vertical-nav a.is-selected .cd-dot {
   -webkit-transform: scale(1);
@@ -285,7 +286,7 @@ img {
 #cd-vertical-nav .cd-dot {
   position: relative;
   top: 8px;
-  right: calc(100% - 15px);
+  /*right: calc(100% - 15px); @Prathap*/
   height: 7px;
   width: 7px;
   border-radius: 50%;
@@ -309,7 +310,7 @@ img {
   transform: scale(0.6);
 }
 #cd-vertical-nav .cd-label {
-  position: relative;
+  /*position: relative; @Prathap*/
   margin-right: 10px;
   padding: 4px 14px;
   color: white;
@@ -334,11 +335,6 @@ img {
 #cd-vertical-nav a.is-selected .cd-label {
   opacity: 1;
   left: -100%;
-  -webkit-transform: scale(1);
-  -moz-transform: scale(1);
-  -ms-transform: scale(1);
-  -o-transform: scale(1);
-  transform: scale(1);
 }
 
 #cd-vertical-nav a:hover .cd-label {
