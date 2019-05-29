@@ -48,6 +48,10 @@ const loginPageStyle = theme => ({
   },
   socialLine: {
     padding: "0.9375rem 0"
+  },
+  inputLabel: {
+    fontWeight: 300,
+    fontSize: "0.8rem"
   }
 });
 

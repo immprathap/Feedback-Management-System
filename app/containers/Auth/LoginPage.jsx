@@ -179,7 +179,7 @@ class LoginPage extends React.Component {
               }}
             />
             <FormControl fullWidth>
-            <InputLabel htmlFor="region-l">Select The Region</InputLabel>
+            <InputLabel classes={{root: classes.inputLabel}} htmlFor="region-l">Select The Region</InputLabel>
             <Select
               //  style={{ width: "300px" }}
               fullWidth

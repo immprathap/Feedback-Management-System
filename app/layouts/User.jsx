@@ -10,7 +10,7 @@ import "perfect-scrollbar/css/perfect-scrollbar.css";
 import withStyles from "@material-ui/core/styles/withStyles";
 
 // core components
-import AdminNavbar from "components/Navbars/AdminNavbar.jsx";
+import UserNavbar from "components/UserNavbars/UserNavbar.jsx";
 import Footer from "components/Footer/Footer.jsx";
 /*import Sidebar from "components/Sidebar/Sidebar.jsx";
 import FixedPlugin from "components/FixedPlugin/FixedPlugin.jsx";*/
@@ -142,12 +142,13 @@ class Dashboard extends React.Component {
     return (
       <div className={classes.wrapper}>
         <div className={mainPanel} ref="mainPanel">
-          <AdminNavbar
+          <UserNavbar
             sidebarMinimize={this.sidebarMinimize.bind(this)}
             miniActive={this.state.miniActive}
             brandText={this.getActiveRoute(routes)}
             handleDrawerToggle={this.handleDrawerToggle}
             {...rest}
+            userLocation="Chennai"
           />
           {/* On the /maps/full-screen-maps route we want the map to be on full screen - this is not possible if the content and conatiner classes are present because they have some paddings which would make the map smaller */}
           {this.getRoute() ? (
