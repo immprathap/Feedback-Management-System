@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
-
+import Select2 from 'react-select';
 import { Helmet } from 'react-helmet';
 // @material-ui/core components
 import IconButton from '@material-ui/core/IconButton';
@@ -56,7 +56,7 @@ class LoginPage extends React.Component {
       mode: "0",
       uname: "",
       pword: "",
-      location:'',
+      location:"",
     };
   }
 
@@ -98,6 +98,8 @@ class LoginPage extends React.Component {
   handleAction = (action) => {
     switch (action) {
       case 'back': {
+        // this.setState({ locationState: "error" });
+        this.setState({ unameState: "error" });
         this.makeSlide({
           activeStep: 1,
           slideDirection: "right"
@@ -105,14 +107,33 @@ class LoginPage extends React.Component {
         break;
       }
       case 'next': {
+        var nextFlag=1;
+        if(this.state.unameState!=="success") {
+          this.setState({ unameState: "error" });
+          nextFlag=0;
+        }
+        // if(this.state.locationState!=="success") {
+        //   this.setState({ locationState: "error" });
+        //   nextFlag=0;
+        // }
+        if(nextFlag===1){
         this.makeSlide({
           activeStep: 2,
           slideDirection: "left"
         });
+        }
         break;
       }
       case 'login': {
-        this.props.history.push('/user/feedback_category');
+        var loginFlag=1;
+        if(this.state.pwordState!=="success") {
+          this.setState({ pwordState: "error" });
+          loginFlag=0;
+        }
+        if(loginFlag===1){
+          this.props.history.push('/user/feedback_category');
+        }
+        
         break;
       }
     }
@@ -122,13 +143,35 @@ class LoginPage extends React.Component {
     this.setState({ mode: event.target.value });
   }
 
+  verifyLength(value, length) {
+    if (value.length >= length) {
+        return true;
+    }
+    return false;
+  }
+
+  handleOnChangeLocation = (field,objValue) => {
+    this.setState({
+      [field]: objValue
+    })
+    if (this.verifyLength(objValue.value, 2)) {
+          this.setState({ [field + "State"]: "success" });
+      } else {
+          this.setState({ [field + "State"]: "error" });
+      }  
+  }
+
   handleOnChange = (field, event) => {
     this.setState({
       [field]: event.target.value
     })
+    if (this.verifyLength(event.target.value, 2)) {
+          this.setState({ [field + "State"]: "success" });
+      } else {
+          this.setState({ [field + "State"]: "error" });
+      }  
   }
   onClickRegion = (selectedLocation) => {
-    console.log("hi",selectedLocation.target.value );
     this.setState({
       location: selectedLocation.target.value
     });
@@ -136,21 +179,19 @@ class LoginPage extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { activeStep, slideDirection, mode, uname, pword } = this.state;
-
-    // var selectOptions = [
-    //   { value: "Delhi", label: "Delhi" },
-    //   { value: "Chennai", label: "Chennai" },
-    //   { value: "Mumbai", label: "Mumbai" },
-    // ];
-    const dropdownList=["Chennai", "Mumbai", "Delhi"];
-    
-
+    const { activeStep, slideDirection, mode, uname, pword, location } = this.state;
+    console.log(location);
+    const options = [
+      { value: 'Delhi', label: 'Delhi' },
+      { value: 'Chennai', label: 'Chennai' },
+      { value: 'Mumbai', label: 'Mumbai' }
+    ]
     let stepContent;
     switch (activeStep) {
       case 1: {
         stepContent = (
           <CardBody>
+            
             <CustomInput
               labelText="Username"
               id="username"
@@ -158,6 +199,8 @@ class LoginPage extends React.Component {
                 fullWidth: true
               }}
               inputProps={{
+                // success: this.state.unameState === "success",
+                error: this.state.unameState === "error",
                 autoFocus: true,
                 onChange: this.handleOnChange.bind(this, "uname"),
                 value: uname,
@@ -178,28 +221,36 @@ class LoginPage extends React.Component {
                 )
               }}
             />
-            <FormControl fullWidth>
-            <InputLabel classes={{root: classes.inputLabel}} htmlFor="region-l">Select The Region</InputLabel>
+            {/* <FormControl fullWidth>
+            <InputLabel classes={{root: classes.inputLabel}} htmlFor="location-l">Select The Location</InputLabel>
             <Select
               //  style={{ width: "300px" }}
               fullWidth
-              value={this.state.location?this.state.location:''}
+              // success= {this.state.locationState === "success"}
+              error= {this.state.locationState === "error"}
+              value={location?location:''}
               inputProps={{
-                name: 'region',
-                id: 'region-l',
+                name: 'location',
+                id: 'location-l',
               }}
-              // onChange={value =>
-              //   console.log("hi",this.state.location)
-                
-              // }
-              onChange={this.onClickRegion.bind(this)}
+              // onChange={this.onClickRegion.bind(this)}
+              onChange= {this.handleOnChange.bind(this, "location")}
               >
             <MenuItem value={"Delhi"}>Delhi</MenuItem>
             <MenuItem value={"Chennai"}>Chennai</MenuItem>
             <MenuItem value={"Mumbai"}>Mumbai</MenuItem>
             </Select>
-            </FormControl>
+            </FormControl> */}
             <br></br>
+            <Select2
+                defaultValue={options[1]}
+                options={options}
+                className={this.state.locationState === "success"?classes.locationGreen:this.state.locationState === "error"?
+                classes.locationRed:classes.location}
+                placeholder="Select the Location"
+                value={location?location:''}
+                onChange= {this.handleOnChangeLocation.bind(this, "location")}
+              />
             <FormControlLabel
               control={
                 <Checkbox
@@ -233,8 +284,12 @@ class LoginPage extends React.Component {
                 fullWidth: true
               }}
               inputProps={{
+                type: "password",
+                // success: this.state.pwordState === "success",
+                error: this.state.pwordState === "error",
                 onChange: this.handleOnChange.bind(this, "pword"),
                 value: pword,
+                
                 onKeyPress: (ev) => {
                   if (ev.key === 'Enter') {
                     this.handleAction('login');
@@ -251,6 +306,8 @@ class LoginPage extends React.Component {
                   </Tooltip>
               }}
             />
+            
+
             <RadioGroup aria-label="position" name="position" value={mode} onChange={this.handleModeChange.bind(this)} row>
               <FormControlLabel
                 value="0"
@@ -275,6 +332,7 @@ class LoginPage extends React.Component {
               />
               <FormControlLabel
                 value="1"
+                disabled
                 control={<Radio color="primary"
                   icon={
                     <FiberManualRecord

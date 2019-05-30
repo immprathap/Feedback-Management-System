@@ -38,7 +38,7 @@ import Check from "@material-ui/icons/Check";
 import FiberManualRecord from "@material-ui/icons/FiberManualRecord";
 import InfoIcon from "@material-ui/icons/Info";
 
-import messages_patientdetails from "containers/User/messages_patientdetails"
+import messages_patientdetails from "containers/User/messages_patientdetails";
 
 import patientDetailsStyle from "assets/jss/material-dashboard-pro-react/containers/patientDetailsStyle.jsx";
 
@@ -56,6 +56,24 @@ class PatientInfo extends React.Component {
     handleDateChange = () => {
 
     }
+    handleOnSubmit = (controlsByCategory, patientDetails) => {
+        var next=1;
+        var patientInfo={};
+        controlsByCategory.map((fieldInfo, i) => {
+            const myState=fieldInfo.id + "State";
+                patientInfo[fieldInfo.id]=this.state[fieldInfo.id];
+                if(fieldInfo.isMandatory===true){
+                    if(!this.state[myState]) {
+                        this.setState({ [myState]: "error" });
+                        next=0;
+                    }
+                }
+        });
+        if(next===1){
+            this.props.onSubmit(patientInfo);
+        }
+        
+    };
 
     // function that returns true if value is email, false otherwise
     verifyEmail(value) {
@@ -214,14 +232,16 @@ class PatientInfo extends React.Component {
             1: [
                 {
                     type: "text",
-                    id: "patient_uhid",
+                    id: "patientUHID",
+                    // labelText: this.props.intl.formatMessage(messages_patientdetails[1]),
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[1]),
+                    isMandatory:true,
                     props: {
                         success: this.state.patientUHIDState === "success",
                         error: this.state.patientUHIDState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[1]} />,
                         inputProps: {
                             onChange: event => this.handleOnChange(event, "patientUHID", "length", 3),
                             type: "text",
@@ -230,30 +250,32 @@ class PatientInfo extends React.Component {
                 },
                 {
                     type: "text",
-                    id: "patient_name",
+                    id: "patientName",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[2]),
+                    isMandatory:true,
                     props: {
                         success: this.state.patientNameState === "success",
                         error: this.state.patientNameState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[2]} />,
                         inputProps: {
-                            onChange: event => this.handleOnChange(event, "patientName", "text"),
+                            onChange: event => this.handleOnChange(event, "patientName", "length", 3),
                             type: "text"
                         },
                     }
                 },
                 {
                     type: "text",
-                    id: "contact_number",
+                    id: "contactNumber",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[3]),
+                    isMandatory:false,
                     props: {
                         success: this.state.contactNumberState === "success",
                         error: this.state.contactNumberState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[3]} />,
                         inputProps: {
                             onChange: event => this.handleOnChange(event, "contactNumber", "length", 0),
                             type: "text"
@@ -315,13 +337,14 @@ class PatientInfo extends React.Component {
                 {
                     type: "text",
                     id: "patient_email",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[11]),
+                    isMandatory:false,
                     onChange: this.handleOnChange,
                     isMandatory: false,
                     props: {
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[11]} />,
                         inputProps: {
                             type: "text"
                         },
@@ -329,46 +352,51 @@ class PatientInfo extends React.Component {
                 },
                 {
                     type: "text",
-                    id: "ip_number",
+                    id: "ipNumber",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[12]),
                     onChange: this.handleOnChange,
                     onLeave: this.handleIPLeave,
                     isMandatory: true,
                     props: {
+                        success: this.state.ipNumberState === "success",
+                        error: this.state.ipNumberState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[12]} />,
                         inputProps: {
-                            type: "text"
+                            type: "text",
+                            onChange: event => this.handleOnChange(event, "ipNumber", "length", 0),
                         },
                     }
                 },
                 {
                     type: "text",
-                    id: "employee_name",
+                    id: "employeeName",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[13]),
+                    isMandatory:false,
                     props: {
                         success: this.state.employeeNameState === "success",
                         error: this.state.employeeNameState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[13]} />,
                         inputProps: {
-                            onChange: event => this.handleOnChange(event, "employeeName", "text"),
+                            onChange: event => this.handleOnChange(event, "employeeName", "length", 3),
                             type: "text"
                         },
                     }
                 },
                 {
                     type: "text",
-                    id: "bed_number",
+                    id: "bedNumber",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[15]),
+                    isMandatory:true,
                     props: {
                         success: this.state.bedNumberState === "success",
                         error: this.state.bedNumberState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[15]} />,
                         inputProps: {
                             onChange: event => this.handleOnChange(event, "bedNumber", "length", 3),
                             type: "text"
@@ -377,14 +405,16 @@ class PatientInfo extends React.Component {
                 },
                 {
                     type: "text",
-                    id: <FormattedMessage {...messages_patientdetails[16]} />,
+                    // id: this.props.intl.formatMessage(messages_patientdetails[16]),
+                    id: "wardName",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[16]),
+                    isMandatory:true,
                     props: {
                         success: this.state.wardNameState === "success",
                         error: this.state.wardNameState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[16]} />,
                         inputProps: {
                             onChange: event => this.handleOnChange(event, "wardName", "length", 3),
                             type: "text"
@@ -393,16 +423,17 @@ class PatientInfo extends React.Component {
                 },
                 {
                     type: "text",
-                    id: "e_code",
+                    id: "eCode",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[17]),
+                    isMandatory:true,
                     props: {
                         success: this.state.eCodeState === "success",
                         error: this.state.eCodeState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[17]} />,
                         inputProps: {
-                            onChange: event => this.handleOnChange(event, "eCode", "text"),
+                            onChange: event => this.handleOnChange(event, "eCode", "length", 3),
                             type: "text"
                         },
                     }
@@ -411,14 +442,15 @@ class PatientInfo extends React.Component {
             2: [
                 {
                     type: "text",
-                    id: "patient_uhid",
+                    id: "patientUHID",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[1]),
+                    isMandatory:true,
                     props: {
                         success: this.state.patientUHIDState === "success",
                         error: this.state.patientUHIDState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[1]} />,
                         inputProps: {
                             onChange: event => this.handleOnChange(event, "patientUHID", "length", 3),
                             type: "text",
@@ -427,30 +459,32 @@ class PatientInfo extends React.Component {
                 },
                 {
                     type: "text",
-                    id: "patient_name",
+                    id: "patientName",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[2]),
+                    isMandatory:true,
                     props: {
                         success: this.state.patientNameState === "success",
                         error: this.state.patientNameState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[2]} />,
                         inputProps: {
-                            onChange: event => this.handleOnChange(event, "patientName", "text"),
+                            onChange: event => this.handleOnChange(event, "patientName", "length", 3),
                             type: "text"
                         },
                     }
                 },
                 {
                     type: "text",
-                    id: "contact_number",
+                    id: "contactNumber",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[3]),
+                    isMandatory:false,
                     props: {
                         success: this.state.contactNumberState === "success",
                         error: this.state.contactNumberState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[3]} />,
                         inputProps: {
                             onChange: event => this.handleOnChange(event, "contactNumber", "length", 0),
                             type: "text"
@@ -486,13 +520,14 @@ class PatientInfo extends React.Component {
                 {
                     type: "text",
                     id: "patient_email",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[11]),
+                    isMandatory:false,
                     onChange: this.handleOnChange,
                     isMandatory: false,
                     props: {
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[11]} />,
                         inputProps: {
                             type: "text"
                         },
@@ -500,32 +535,34 @@ class PatientInfo extends React.Component {
                 },
                 {
                     type: "text",
-                    id: "employee_name",
+                    id: "employeeName",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[13]),
+                    isMandatory:false,
                     props: {
                         success: this.state.employeeNameState === "success",
                         error: this.state.employeeNameState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[13]} />,
                         inputProps: {
-                            onChange: event => this.handleOnChange(event, "employeeName", "text"),
+                            onChange: event => this.handleOnChange(event, "employeeName", "length", 3),
                             type: "text"
                         },
                     }
                 },
                 {
                     type: "text",
-                    id: "e_code",
+                    id: "eCode",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[17]),
+                    isMandatory:true,
                     props: {
                         success: this.state.eCodeState === "success",
                         error: this.state.eCodeState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[17]} />,
                         inputProps: {
-                            onChange: event => this.handleOnChange(event, "eCode", "text"),
+                            onChange: event => this.handleOnChange(event, "eCode", "length", 3),
                             type: "text"
                         },
                     }
@@ -534,14 +571,15 @@ class PatientInfo extends React.Component {
             3: [
                 {
                     type: "text",
-                    id: "patient_uhid",
+                    id: "patientUHID",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[1]),
+                    isMandatory:true,
                     props: {
                         success: this.state.patientUHIDState === "success",
                         error: this.state.patientUHIDState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[1]} />,
                         inputProps: {
                             onChange: event => this.handleOnChange(event, "patientUHID", "length", 3),
                             type: "text",
@@ -550,30 +588,32 @@ class PatientInfo extends React.Component {
                 },
                 {
                     type: "text",
-                    id: "patient_name",
+                    id: "patientName",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[2]),
+                    isMandatory:true,
                     props: {
                         success: this.state.patientNameState === "success",
                         error: this.state.patientNameState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[2]} />,
                         inputProps: {
-                            onChange: event => this.handleOnChange(event, "patientName", "text"),
+                            onChange: event => this.handleOnChange(event, "patientName", "length", 3),
                             type: "text"
                         },
                     }
                 },
                 {
                     type: "text",
-                    id: "contact_number",
+                    id: "contactNumber",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[3]),
+                    isMandatory:false,
                     props: {
                         success: this.state.contactNumberState === "success",
                         error: this.state.contactNumberState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[3]} />,
                         inputProps: {
                             onChange: event => this.handleOnChange(event, "contactNumber", "length", 0),
                             type: "text"
@@ -583,13 +623,14 @@ class PatientInfo extends React.Component {
                 {
                     type: "text",
                     id: "patient_email",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[11]),
+                    isMandatory:false,
                     onChange: this.handleOnChange,
                     isMandatory: false,
                     props: {
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[11]} />,
                         inputProps: {
                             type: "text"
                         },
@@ -597,32 +638,36 @@ class PatientInfo extends React.Component {
                 },
                 {
                     type: "text",
-                    id: "ip_number",
+                    id: "ipNumber",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[12]),
                     onChange: this.handleOnChange,
                     onLeave: this.handleIPLeave,
                     isMandatory: true,
                     props: {
+                        success: this.state.ipNumberState === "success",
+                        error: this.state.ipNumberState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[12]} />,
                         inputProps: {
-                            type: "text"
+                            type: "text",
+                            onChange: event => this.handleOnChange(event, "ipNumber", "length", 0),
                         },
                     }
                 },
                 {
                     type: "text",
-                    id: "physician_name",
+                    id: "physicianName",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[14]),
+                    isMandatory:true,
                     props: {
                         success: this.state.patientNameState === "success",
                         error: this.state.patientNameState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[14]} />,
                         inputProps: {
-                            onChange: event => this.handleOnChange(event, "physicianName", "text"),
+                            onChange: event => this.handleOnChange(event, "physicianName", "length", 3),
                             type: "text"
                         },
                     }
@@ -633,14 +678,15 @@ class PatientInfo extends React.Component {
                 ip: [
                     {
                         type: "text",
-                        id: "patient_uhid",
+                        id: "patientUHID",
+                        labelText: this.props.intl.formatMessage(messages_patientdetails[1]),
+                        isMandatory:true,
                         props: {
                             success: this.state.patientUHIDState === "success",
                             error: this.state.patientUHIDState === "error",
                             formControlProps: {
                                 fullWidth: true
                             },
-                            labelText: <FormattedMessage {...messages_patientdetails[1]} />,
                             inputProps: {
                                 onChange: event => this.handleOnChange(event, "patientUHID", "length", 3),
                                 type: "text",
@@ -649,30 +695,32 @@ class PatientInfo extends React.Component {
                     },
                     {
                         type: "text",
-                        id: "patient_name",
+                        id: "patientName",
+                        labelText: this.props.intl.formatMessage(messages_patientdetails[2]),
+                        isMandatory:true,
                         props: {
                             success: this.state.patientNameState === "success",
                             error: this.state.patientNameState === "error",
                             formControlProps: {
                                 fullWidth: true
                             },
-                            labelText: <FormattedMessage {...messages_patientdetails[2]} />,
                             inputProps: {
-                                onChange: event => this.handleOnChange(event, "patientName", "text"),
+                                onChange: event => this.handleOnChange(event, "patientName", "length", 3),
                                 type: "text"
                             },
                         }
                     },
                     {
                         type: "text",
-                        id: "contact_number",
+                        id: "contactNumber",
+                        labelText: this.props.intl.formatMessage(messages_patientdetails[3]),
+                        isMandatory:false,
                         props: {
                             success: this.state.contactNumberState === "success",
                             error: this.state.contactNumberState === "error",
                             formControlProps: {
                                 fullWidth: true
                             },
-                            labelText: <FormattedMessage {...messages_patientdetails[3]} />,
                             inputProps: {
                                 onChange: event => this.handleOnChange(event, "contactNumber", "length", 0),
                                 type: "text"
@@ -681,18 +729,18 @@ class PatientInfo extends React.Component {
                     },
                     {
                         type: "options",
-                        id: "patient_type",
-                        label: <FormattedMessage {...messages_patientdetails[4]} />,
+                        id: "webPatientType",
+                        label: this.props.intl.formatMessage(messages_patientdetails[4]),
                         options: [
                             {
-                                label: <FormattedMessage {...messages_patientdetails[5]} />,
+                                label: this.props.intl.formatMessage(messages_patientdetails[5]),
                                 props: {
                                     checked: this.state.webPatientType === "ip",
                                     onChange: event => this.handleType(event, 'webPatientType', 'ip')
                                 }
                             },
                             {
-                                label: <FormattedMessage {...messages_patientdetails[6]} />,
+                                label: this.props.intl.formatMessage(messages_patientdetails[6]),
                                 props: {
                                     checked: this.state.webPatientType === "op",
                                     onChange: event => this.handleType(event, 'webPatientType', 'op')
@@ -729,13 +777,13 @@ class PatientInfo extends React.Component {
                     {
                         type: "text",
                         id: "patient_email",
+                        labelText: this.props.intl.formatMessage(messages_patientdetails[11]),
                         onChange: this.handleOnChange,
                         isMandatory: false,
                         props: {
                             formControlProps: {
                                 fullWidth: true
                             },
-                            labelText: <FormattedMessage {...messages_patientdetails[11]} />,
                             inputProps: {
                                 type: "text"
                             },
@@ -743,30 +791,34 @@ class PatientInfo extends React.Component {
                     },
                     {
                         type: "text",
-                        id: "ip_number",
+                        id: "ipNumber",
+                        labelText: this.props.intl.formatMessage(messages_patientdetails[12]),
                         onChange: this.handleOnChange,
                         onLeave: this.handleIPLeave,
                         isMandatory: true,
                         props: {
+                            success: this.state.ipNumberState === "success",
+                            error: this.state.ipNumberState === "error",
                             formControlProps: {
                                 fullWidth: true
                             },
-                            labelText: <FormattedMessage {...messages_patientdetails[12]} />,
                             inputProps: {
-                                type: "text"
+                                type: "text",
+                                onChange: event => this.handleOnChange(event, "ipNumber", "length", 0),
                             },
                         }
                     },
                     {
                         type: "text",
-                        id: "bed_number",
+                        id: "bedNumber",
+                        labelText: this.props.intl.formatMessage(messages_patientdetails[15]),
+                        isMandatory:true,
                         props: {
                             success: this.state.bedNumberState === "success",
                             error: this.state.bedNumberState === "error",
                             formControlProps: {
                                 fullWidth: true
                             },
-                            labelText: <FormattedMessage {...messages_patientdetails[15]} />,
                             inputProps: {
                                 onChange: event => this.handleOnChange(event, "bedNumber", "length", 3),
                                 type: "text"
@@ -775,14 +827,16 @@ class PatientInfo extends React.Component {
                     },
                     {
                         type: "text",
-                        id: <FormattedMessage {...messages_patientdetails[16]} />,
+                        // id: this.props.intl.formatMessage(messages_patientdetails[16]),
+                        id: "wardName",
+                        labelText: this.props.intl.formatMessage(messages_patientdetails[16]),
+                        isMandatory:true,
                         props: {
                             success: this.state.wardNameState === "success",
                             error: this.state.wardNameState === "error",
                             formControlProps: {
                                 fullWidth: true
                             },
-                            labelText: <FormattedMessage {...messages_patientdetails[16]} />,
                             inputProps: {
                                 onChange: event => this.handleOnChange(event, "wardName", "length", 3),
                                 type: "text"
@@ -793,14 +847,15 @@ class PatientInfo extends React.Component {
                 op: [
                     {
                         type: "text",
-                        id: "patient_uhid",
+                        id: "patientUHID",
+                        labelText: this.props.intl.formatMessage(messages_patientdetails[1]),
+                        isMandatory:true,
                         props: {
                             success: this.state.patientUHIDState === "success",
                             error: this.state.patientUHIDState === "error",
                             formControlProps: {
                                 fullWidth: true
                             },
-                            labelText: <FormattedMessage {...messages_patientdetails[1]} />,
                             inputProps: {
                                 onChange: event => this.handleOnChange(event, "patientUHID", "length", 3),
                                 type: "text",
@@ -809,30 +864,32 @@ class PatientInfo extends React.Component {
                     },
                     {
                         type: "text",
-                        id: "patient_name",
+                        id: "patientName",
+                        labelText: this.props.intl.formatMessage(messages_patientdetails[2]),
+                        isMandatory:true,
                         props: {
                             success: this.state.patientNameState === "success",
                             error: this.state.patientNameState === "error",
                             formControlProps: {
                                 fullWidth: true
                             },
-                            labelText: <FormattedMessage {...messages_patientdetails[2]} />,
                             inputProps: {
-                                onChange: event => this.handleOnChange(event, "patientName", "text"),
+                                onChange: event => this.handleOnChange(event, "patientName", "length", 3),
                                 type: "text"
                             },
                         }
                     },
                     {
                         type: "text",
-                        id: "contact_number",
+                        id: "contactNumber",
+                        labelText: this.props.intl.formatMessage(messages_patientdetails[3]),
+                        isMandatory:false,
                         props: {
                             success: this.state.contactNumberState === "success",
                             error: this.state.contactNumberState === "error",
                             formControlProps: {
                                 fullWidth: true
                             },
-                            labelText: <FormattedMessage {...messages_patientdetails[3]} />,
                             inputProps: {
                                 onChange: event => this.handleOnChange(event, "contactNumber", "length", 0),
                                 type: "text"
@@ -841,18 +898,18 @@ class PatientInfo extends React.Component {
                     },
                     {
                         type: "options",
-                        id: "patient_type",
-                        label: <FormattedMessage {...messages_patientdetails[4]} />,
+                        id: "webPatientType",
+                        label: this.props.intl.formatMessage(messages_patientdetails[4]),
                         options: [
                             {
-                                label: <FormattedMessage {...messages_patientdetails[5]} />,
+                                label: this.props.intl.formatMessage(messages_patientdetails[5]),
                                 props: {
                                     checked: this.state.webPatientType === "ip",
                                     onChange: event => this.handleType(event, 'webPatientType', 'ip')
                                 }
                             },
                             {
-                                label: <FormattedMessage {...messages_patientdetails[6]} />,
+                                label: this.props.intl.formatMessage(messages_patientdetails[6]),
                                 props: {
                                     checked: this.state.webPatientType === "op",
                                     onChange: event => this.handleType(event, 'webPatientType', 'op')
@@ -863,13 +920,14 @@ class PatientInfo extends React.Component {
                     {
                         type: "text",
                         id: "patient_email",
+                        labelText: this.props.intl.formatMessage(messages_patientdetails[11]),
+                    isMandatory:false,
                         onChange: this.handleOnChange,
                         isMandatory: false,
                         props: {
                             formControlProps: {
                                 fullWidth: true
                             },
-                            labelText: <FormattedMessage {...messages_patientdetails[11]} />,
                             inputProps: {
                                 type: "text"
                             },
@@ -877,16 +935,17 @@ class PatientInfo extends React.Component {
                     },
                     {
                         type: "text",
-                        id: "employee_name",
+                        id: "employeeName",
+                        labelText: this.props.intl.formatMessage(messages_patientdetails[13]),
+                        isMandatory:false,
                         props: {
                             success: this.state.employeeNameState === "success",
                             error: this.state.employeeNameState === "error",
                             formControlProps: {
                                 fullWidth: true
                             },
-                            labelText: <FormattedMessage {...messages_patientdetails[13]} />,
                             inputProps: {
-                                onChange: event => this.handleOnChange(event, "employeeName", "text"),
+                                onChange: event => this.handleOnChange(event, "employeeName", "length", 3),
                                 type: "text"
                             },
                         }
@@ -896,14 +955,15 @@ class PatientInfo extends React.Component {
             5: [
                 {
                     type: "text",
-                    id: "patient_uhid",
+                    id: "patientUHID",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[1]),
+                    isMandatory:true,
                     props: {
                         success: this.state.patientUHIDState === "success",
                         error: this.state.patientUHIDState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[1]} />,
                         inputProps: {
                             onChange: event => this.handleOnChange(event, "patientUHID", "length", 3),
                             type: "text",
@@ -912,30 +972,32 @@ class PatientInfo extends React.Component {
                 },
                 {
                     type: "text",
-                    id: "patient_name",
+                    id: "patientName",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[2]),
+                    isMandatory:true,
                     props: {
                         success: this.state.patientNameState === "success",
                         error: this.state.patientNameState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[2]} />,
                         inputProps: {
-                            onChange: event => this.handleOnChange(event, "patientName", "text"),
+                            onChange: event => this.handleOnChange(event, "patientName", "length", 3),
                             type: "text"
                         },
                     }
                 },
                 {
                     type: "text",
-                    id: "contact_number",
+                    id: "contactNumber",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[3]),
+                    isMandatory:false,
                     props: {
                         success: this.state.contactNumberState === "success",
                         error: this.state.contactNumberState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[3]} />,
                         inputProps: {
                             onChange: event => this.handleOnChange(event, "contactNumber", "length", 0),
                             type: "text"
@@ -971,13 +1033,14 @@ class PatientInfo extends React.Component {
                 {
                     type: "text",
                     id: "patient_email",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[11]),
+                    isMandatory:false,
                     onChange: this.handleOnChange,
                     isMandatory: false,
                     props: {
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[11]} />,
                         inputProps: {
                             type: "text"
                         },
@@ -985,32 +1048,34 @@ class PatientInfo extends React.Component {
                 },
                 {
                     type: "text",
-                    id: "employee_name",
+                    id: "employeeName",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[13]),
+                    isMandatory:false,
                     props: {
                         success: this.state.employeeNameState === "success",
                         error: this.state.employeeNameState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[13]} />,
                         inputProps: {
-                            onChange: event => this.handleOnChange(event, "employeeName", "text"),
+                            onChange: event => this.handleOnChange(event, "employeeName", "length", 3),
                             type: "text"
                         },
                     }
                 },
                 {
                     type: "text",
-                    id: "e_code",
+                    id: "eCode",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[17]),
+                    isMandatory:true,
                     props: {
                         success: this.state.eCodeState === "success",
                         error: this.state.eCodeState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[17]} />,
                         inputProps: {
-                            onChange: event => this.handleOnChange(event, "eCode", "text"),
+                            onChange: event => this.handleOnChange(event, "eCode", "length", 3),
                             type: "text"
                         },
                     }
@@ -1019,14 +1084,15 @@ class PatientInfo extends React.Component {
             6: [
                 {
                     type: "text",
-                    id: "patient_uhid",
+                    id: "patientUHID",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[1]),
+                    isMandatory:true,
                     props: {
                         success: this.state.patientUHIDState === "success",
                         error: this.state.patientUHIDState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[1]} />,
                         inputProps: {
                             onChange: event => this.handleOnChange(event, "patientUHID", "length", 3),
                             type: "text",
@@ -1035,30 +1101,32 @@ class PatientInfo extends React.Component {
                 },
                 {
                     type: "text",
-                    id: "patient_name",
+                    id: "patientName",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[2]),
+                    isMandatory:true,
                     props: {
                         success: this.state.patientNameState === "success",
                         error: this.state.patientNameState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[2]} />,
                         inputProps: {
-                            onChange: event => this.handleOnChange(event, "patientName", "text"),
+                            onChange: event => this.handleOnChange(event, "patientName", "length", 3),
                             type: "text"
                         },
                     }
                 },
                 {
                     type: "text",
-                    id: "contact_number",
+                    id: "contactNumber",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[3]),
+                    isMandatory:false,
                     props: {
                         success: this.state.contactNumberState === "success",
                         error: this.state.contactNumberState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[3]} />,
                         inputProps: {
                             onChange: event => this.handleOnChange(event, "contactNumber", "length", 0),
                             type: "text"
@@ -1094,13 +1162,14 @@ class PatientInfo extends React.Component {
                 {
                     type: "text",
                     id: "patient_email",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[11]),
+                    isMandatory:false,
                     onChange: this.handleOnChange,
                     isMandatory: false,
                     props: {
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[11]} />,
                         inputProps: {
                             type: "text"
                         },
@@ -1108,32 +1177,34 @@ class PatientInfo extends React.Component {
                 },
                 {
                     type: "text",
-                    id: "employee_name",
+                    id: "employeeName",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[13]),
+                    isMandatory:false,
                     props: {
                         success: this.state.employeeNameState === "success",
                         error: this.state.employeeNameState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[13]} />,
                         inputProps: {
-                            onChange: event => this.handleOnChange(event, "employeeName", "text"),
+                            onChange: event => this.handleOnChange(event, "employeeName", "length", 3),
                             type: "text"
                         },
                     }
                 },
                 {
                     type: "text",
-                    id: "e_code",
+                    id: "eCode",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[17]),
+                    isMandatory:true,
                     props: {
                         success: this.state.eCodeState === "success",
                         error: this.state.eCodeState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[17]} />,
                         inputProps: {
-                            onChange: event => this.handleOnChange(event, "eCode", "text"),
+                            onChange: event => this.handleOnChange(event, "eCode", "length", 3),
                             type: "text"
                         },
                     }
@@ -1142,14 +1213,15 @@ class PatientInfo extends React.Component {
             7: [
                 {
                     type: "text",
-                    id: "patient_uhid",
+                    id: "patientUHID",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[1]),
+                    isMandatory:true,
                     props: {
                         success: this.state.patientUHIDState === "success",
                         error: this.state.patientUHIDState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[1]} />,
                         inputProps: {
                             onChange: event => this.handleOnChange(event, "patientUHID", "length", 3),
                             type: "text",
@@ -1158,30 +1230,32 @@ class PatientInfo extends React.Component {
                 },
                 {
                     type: "text",
-                    id: "patient_name",
+                    id: "patientName",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[2]),
+                    isMandatory:true,
                     props: {
                         success: this.state.patientNameState === "success",
                         error: this.state.patientNameState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[2]} />,
                         inputProps: {
-                            onChange: event => this.handleOnChange(event, "patientName", "text"),
+                            onChange: event => this.handleOnChange(event, "patientName", "length", 3),
                             type: "text"
                         },
                     }
                 },
                 {
                     type: "text",
-                    id: "contact_number",
+                    id: "contactNumber",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[3]),
+                    isMandatory:false,
                     props: {
                         success: this.state.contactNumberState === "success",
                         error: this.state.contactNumberState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[3]} />,
                         inputProps: {
                             onChange: event => this.handleOnChange(event, "contactNumber", "length", 0),
                             type: "text"
@@ -1217,13 +1291,14 @@ class PatientInfo extends React.Component {
                 {
                     type: "text",
                     id: "patient_email",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[11]),
+                    isMandatory:false,
                     onChange: this.handleOnChange,
                     isMandatory: false,
                     props: {
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[11]} />,
                         inputProps: {
                             type: "text"
                         },
@@ -1231,32 +1306,34 @@ class PatientInfo extends React.Component {
                 },
                 {
                     type: "text",
-                    id: "employee_name",
+                    id: "employeeName",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[13]),
+                    isMandatory:false,
                     props: {
                         success: this.state.employeeNameState === "success",
                         error: this.state.employeeNameState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[13]} />,
                         inputProps: {
-                            onChange: event => this.handleOnChange(event, "employeeName", "text"),
+                            onChange: event => this.handleOnChange(event, "employeeName", "length", 3),
                             type: "text"
                         },
                     }
                 },
                 {
                     type: "text",
-                    id: "e_code",
+                    id: "eCode",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[17]),
+                    isMandatory:true,
                     props: {
                         success: this.state.eCodeState === "success",
                         error: this.state.eCodeState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[17]} />,
                         inputProps: {
-                            onChange: event => this.handleOnChange(event, "eCode", "text"),
+                            onChange: event => this.handleOnChange(event, "eCode", "length", 3),
                             type: "text"
                         },
                     }
@@ -1265,14 +1342,15 @@ class PatientInfo extends React.Component {
             8: [
                 {
                     type: "text",
-                    id: "patient_uhid",
+                    id: "patientUHID",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[1]),
+                    isMandatory:true,
                     props: {
                         success: this.state.patientUHIDState === "success",
                         error: this.state.patientUHIDState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[1]} />,
                         inputProps: {
                             onChange: event => this.handleOnChange(event, "patientUHID", "length", 3),
                             type: "text",
@@ -1281,30 +1359,32 @@ class PatientInfo extends React.Component {
                 },
                 {
                     type: "text",
-                    id: "patient_name",
+                    id: "patientName",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[2]),
+                    isMandatory:true,
                     props: {
                         success: this.state.patientNameState === "success",
                         error: this.state.patientNameState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[2]} />,
                         inputProps: {
-                            onChange: event => this.handleOnChange(event, "patientName", "text"),
+                            onChange: event => this.handleOnChange(event, "patientName", "length", 3),
                             type: "text"
                         },
                     }
                 },
                 {
                     type: "text",
-                    id: "contact_number",
+                    id: "contactNumber",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[3]),
+                    isMandatory:false,
                     props: {
                         success: this.state.contactNumberState === "success",
                         error: this.state.contactNumberState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[3]} />,
                         inputProps: {
                             onChange: event => this.handleOnChange(event, "contactNumber", "length", 0),
                             type: "text"
@@ -1340,13 +1420,14 @@ class PatientInfo extends React.Component {
                 {
                     type: "text",
                     id: "patient_email",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[11]),
+                    isMandatory:false,
                     onChange: this.handleOnChange,
                     isMandatory: false,
                     props: {
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[11]} />,
                         inputProps: {
                             type: "text"
                         },
@@ -1354,32 +1435,34 @@ class PatientInfo extends React.Component {
                 },
                 {
                     type: "text",
-                    id: "employee_name",
+                    id: "employeeName",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[13]),
+                    isMandatory:false,
                     props: {
                         success: this.state.employeeNameState === "success",
                         error: this.state.employeeNameState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[13]} />,
                         inputProps: {
-                            onChange: event => this.handleOnChange(event, "employeeName", "text"),
+                            onChange: event => this.handleOnChange(event, "employeeName", "length", 3),
                             type: "text"
                         },
                     }
                 },
                 {
                     type: "text",
-                    id: "e_code",
+                    id: "eCode",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[17]),
+                    isMandatory:true,
                     props: {
                         success: this.state.eCodeState === "success",
                         error: this.state.eCodeState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[17]} />,
                         inputProps: {
-                            onChange: event => this.handleOnChange(event, "eCode", "text"),
+                            onChange: event => this.handleOnChange(event, "eCode", "length", 3),
                             type: "text"
                         },
                     }
@@ -1388,14 +1471,15 @@ class PatientInfo extends React.Component {
             9: [
                 {
                     type: "text",
-                    id: "patient_uhid",
+                    id: "patientUHID",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[1]),
+                    isMandatory:true,
                     props: {
                         success: this.state.patientUHIDState === "success",
                         error: this.state.patientUHIDState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[1]} />,
                         inputProps: {
                             onChange: event => this.handleOnChange(event, "patientUHID", "length", 3),
                             type: "text",
@@ -1404,30 +1488,32 @@ class PatientInfo extends React.Component {
                 },
                 {
                     type: "text",
-                    id: "patient_name",
+                    id: "patientName",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[2]),
+                    isMandatory:true,
                     props: {
                         success: this.state.patientNameState === "success",
                         error: this.state.patientNameState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[2]} />,
                         inputProps: {
-                            onChange: event => this.handleOnChange(event, "patientName", "text"),
+                            onChange: event => this.handleOnChange(event, "patientName", "length", 3),
                             type: "text"
                         },
                     }
                 },
                 {
                     type: "text",
-                    id: "contact_number",
+                    id: "contactNumber",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[3]),
+                    isMandatory:false,
                     props: {
                         success: this.state.contactNumberState === "success",
                         error: this.state.contactNumberState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[3]} />,
                         inputProps: {
                             onChange: event => this.handleOnChange(event, "contactNumber", "length", 0),
                             type: "text"
@@ -1463,13 +1549,14 @@ class PatientInfo extends React.Component {
                 {
                     type: "text",
                     id: "patient_email",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[11]),
+                    isMandatory:false,
                     onChange: this.handleOnChange,
                     isMandatory: false,
                     props: {
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[11]} />,
                         inputProps: {
                             type: "text"
                         },
@@ -1477,32 +1564,34 @@ class PatientInfo extends React.Component {
                 },
                 {
                     type: "text",
-                    id: "employee_name",
+                    id: "employeeName",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[13]),
+                    isMandatory:false,
                     props: {
                         success: this.state.employeeNameState === "success",
                         error: this.state.employeeNameState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[13]} />,
                         inputProps: {
-                            onChange: event => this.handleOnChange(event, "employeeName", "text"),
+                            onChange: event => this.handleOnChange(event, "employeeName", "length", 3),
                             type: "text"
                         },
                     }
                 },
                 {
                     type: "text",
-                    id: "e_code",
+                    id: "eCode",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[17]),
+                    isMandatory:true,
                     props: {
                         success: this.state.eCodeState === "success",
                         error: this.state.eCodeState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[17]} />,
                         inputProps: {
-                            onChange: event => this.handleOnChange(event, "eCode", "text"),
+                            onChange: event => this.handleOnChange(event, "eCode", "length", 3),
                             type: "text"
                         },
                     }
@@ -1511,14 +1600,15 @@ class PatientInfo extends React.Component {
             10: [
                 {
                     type: "text",
-                    id: "patient_uhid",
+                    id: "patientUHID",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[1]),
+                    isMandatory:true,
                     props: {
                         success: this.state.patientUHIDState === "success",
                         error: this.state.patientUHIDState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[1]} />,
                         inputProps: {
                             onChange: event => this.handleOnChange(event, "patientUHID", "length", 3),
                             type: "text",
@@ -1527,30 +1617,32 @@ class PatientInfo extends React.Component {
                 },
                 {
                     type: "text",
-                    id: "patient_name",
+                    id: "patientName",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[2]),
+                    isMandatory:true,
                     props: {
                         success: this.state.patientNameState === "success",
                         error: this.state.patientNameState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[2]} />,
                         inputProps: {
-                            onChange: event => this.handleOnChange(event, "patientName", "text"),
+                            onChange: event => this.handleOnChange(event, "patientName", "length", 3),
                             type: "text"
                         },
                     }
                 },
                 {
                     type: "text",
-                    id: "contact_number",
+                    id: "contactNumber",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[3]),
+                    isMandatory:false,
                     props: {
                         success: this.state.contactNumberState === "success",
                         error: this.state.contactNumberState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[3]} />,
                         inputProps: {
                             onChange: event => this.handleOnChange(event, "contactNumber", "length", 0),
                             type: "text"
@@ -1586,13 +1678,14 @@ class PatientInfo extends React.Component {
                 {
                     type: "text",
                     id: "patient_email",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[11]),
+                    isMandatory:false,
                     onChange: this.handleOnChange,
                     isMandatory: false,
                     props: {
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[11]} />,
                         inputProps: {
                             type: "text"
                         },
@@ -1600,32 +1693,35 @@ class PatientInfo extends React.Component {
                 },
                 {
                     type: "text",
-                    id: "employee_name",
+                    id: "employeeName",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[13]),
+                    isMandatory:false,
                     props: {
                         success: this.state.employeeNameState === "success",
                         error: this.state.employeeNameState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[13]} />,
+                        
                         inputProps: {
-                            onChange: event => this.handleOnChange(event, "employeeName", "text"),
+                            onChange: event => this.handleOnChange(event, "employeeName", "length", 3),
                             type: "text"
                         },
                     }
                 },
                 {
                     type: "text",
-                    id: "e_code",
+                    id: "eCode",
+                    labelText: this.props.intl.formatMessage(messages_patientdetails[17]),
+                    isMandatory:true,
                     props: {
                         success: this.state.eCodeState === "success",
                         error: this.state.eCodeState === "error",
                         formControlProps: {
                             fullWidth: true
                         },
-                        labelText: <FormattedMessage {...messages_patientdetails[17]} />,
                         inputProps: {
-                            onChange: event => this.handleOnChange(event, "eCode", "text"),
+                            onChange: event => this.handleOnChange(event, "eCode", "length", 3),
                             type: "text"
                         },
                     }
@@ -1641,6 +1737,8 @@ class PatientInfo extends React.Component {
                     <GridItem key={i} xs={12} sm={10}>
                         <CustomInput
                             {...fieldInfo.props}
+                            
+                            labelText={fieldInfo.isMandatory?fieldInfo.labelText + "*":fieldInfo.labelText}
                         />
                     </GridItem>
                 );
@@ -1708,7 +1806,7 @@ class PatientInfo extends React.Component {
                             <Button color="primary" simple size="lg" block onClick={this.props.onCancel.bind(this)}>
                                 Cancel
                             </Button>
-                            <Button color="primary" simple size="lg" block onClick={this.props.onSubmit.bind(this)}>
+                            <Button color="primary" simple size="lg" block onClick={this.handleOnSubmit.bind(this,controlsByCategory)}>
                                 Next
                             </Button>
                         </CardFooter>

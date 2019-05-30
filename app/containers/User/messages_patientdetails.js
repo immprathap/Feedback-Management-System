@@ -11,11 +11,11 @@ export const scope = 'app.containers.User.Feedback.PatientDetails';
 export default defineMessages({
   1: {
     id: `${scope}.1`,
-    defaultMessage: 'Patient UHID *',
+    defaultMessage: 'Patient UHID ',
   },
   2: {
     id: `${scope}.2`,
-    defaultMessage: 'Patient name *',
+    defaultMessage: 'Patient name ',
   },
   3: {
     id: `${scope}.3`,
@@ -55,7 +55,7 @@ export default defineMessages({
   },
   12: {
     id: `${scope}.12`,
-    defaultMessage: 'IP number *',
+    defaultMessage: 'IP number ',
   },
   13: {
     id: `${scope}.13`,
@@ -63,18 +63,18 @@ export default defineMessages({
   },
   14: {
     id: `${scope}.14`,
-    defaultMessage: 'Physician name *',
+    defaultMessage: 'Physician name ',
   },
   15: {
     id: `${scope}.15`,
-    defaultMessage: 'Bed number *',
+    defaultMessage: 'Bed number ',
   },
   16: {
     id: `${scope}.16`,
-    defaultMessage: 'Ward name *',
+    defaultMessage: 'Ward name ',
   },
   17: {
     id: `${scope}.17`,
-    defaultMessage: 'E-Code *',
+    defaultMessage: 'E-Code ',
   },
 });

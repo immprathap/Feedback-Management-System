@@ -52,6 +52,18 @@ const loginPageStyle = theme => ({
   inputLabel: {
     fontWeight: 300,
     fontSize: "0.8rem"
+  },
+  location:{
+    padding: "20px 0",
+    borderColor: "Green",
+  },
+  locationGreen:{
+    padding: "20px 0",
+    borderColor: "Green",
+  },
+  locationRed:{
+    padding: "20px 0",
+    borderColor: "Red",
   }
 });
 
